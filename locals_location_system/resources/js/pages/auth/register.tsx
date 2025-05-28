@@ -8,12 +8,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 type RegisterForm = {
     name: string;
     email: string;
     password: string;
     password_confirmation: string;
+    role:string;
 };
 
 export default function Register() {
@@ -22,6 +29,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        role: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -85,6 +93,7 @@ export default function Register() {
                         <InputError message={errors.password} />
                     </div>
 
+
                     <div className="grid gap-2">
                         <Label htmlFor="password_confirmation">Confirm password</Label>
                         <Input
@@ -100,7 +109,23 @@ export default function Register() {
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
-
+        <div className='grid gap-2'>
+                        <Label htmlFor="role">Role</Label>
+                        <Select
+                            name="role"
+                            value={data.role}
+                            onValueChange={(value) => setData('role',value)}
+                            disabled={processing}
+                        >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder={data.role === "" ? "Select a role": data.role} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="client">Client</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                        </Select>
+                    </div>
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Create account
