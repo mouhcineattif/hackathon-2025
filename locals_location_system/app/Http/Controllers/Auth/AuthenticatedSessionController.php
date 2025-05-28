@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,15 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));
+    }
+    public function loginWithQr(Request $request){
+        // dd($request);
+        $user = User::where('qr_code', $request->qr_code)->first();
+        if($user){
+            Auth::login($user);
+            $request->session()->regenerate();
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     /**
